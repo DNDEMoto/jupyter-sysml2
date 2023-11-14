@@ -11,7 +11,7 @@
 			"version": "latest"
 		}
 	},
-	"postCreateCommand": "/bin/sh .devcontainer/postCreateCommand.sh",
+	"postCreateCommand": "/bin/sh ./SysML-v2-Release/install/jupyter/install.sh",
 	"postStartCommand": "jupyter lab"
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},

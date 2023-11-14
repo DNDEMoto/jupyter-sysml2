@@ -14,3 +14,6 @@ RUN if [ -f "/tmp/conda-tmp/environment.yml" ]; then umask 0002 && /opt/conda/bi
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
+WORKDIR /workspaces/sysml2-jupyter
+RUN git clone --depth 1 https://github.com/Systems-Modeling/SysML-v2-Release.git
+RUN chmod +x ./SysML-v2-Release/install/jupyter/install.sh
