@@ -1,19 +1,24 @@
-FROM mcr.microsoft.com/devcontainers/miniconda:0-3
+FROM openjdk:17-slim
+# SysML v2 Version
+ARG RELEASE=2023-10
+RUN apt-get --quiet --yes update && apt-get install -yqq \
+  wget 
 
-# Copy environment.yml (if found) to a temp location so we update the environment. Also
-# copy "noop.txt" so the COPY instruction does not fail if no environment.yml exists.
-COPY environment.yml* .devcontainer/noop.txt /tmp/conda-tmp/
-RUN if [ -f "/tmp/conda-tmp/environment.yml" ]; then umask 0002 && /opt/conda/bin/conda env update -n base -f /tmp/conda-tmp/environment.yml; fi \
-    && rm -rf /tmp/conda-tmp
+# Install MiniConda
+RUN mkdir -p /home/root/miniconda3
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-$(uname -m).sh -O /home/root/miniconda3/miniconda.sh
+RUN bash /home/root/miniconda3/miniconda.sh -b -u -p /home/root/miniconda3
+RUN rm -rf /home/root/miniconda3/miniconda.sh
 
-# [Optional] Uncomment to install a different version of Python than the default
-# RUN conda install -y python=3.6 \
-#     && pip install --no-cache-dir pipx \
-#     && pipx reinstall-all
+# Install Jupyter SysML
+RUN mkdir -p /home/root/sysml
+RUN wget -q https://github.com/Systems-Modeling/SysML-v2-Release/archive/refs/tags/${RELEASE}.tar.gz -O /home/root/sysml/${RELEASE}.tar.gz
+RUN tar xzf /home/root/sysml/${RELEASE}.tar.gz -C /home/root/sysml
+## This is the path that conda init setups but conda init has no effect
+## here, so setup the PATH by hand. Else install.sh won't work.
+## -> see, https://github.com/gorenje/sysmlv2-jupyter-docker/blob/main/Dockerfile
+ENV PATH="/home/root/miniconda3/bin:/home/root/miniconda3/condabin:/usr/local/openjdk-17/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+WORKDIR /home/root/sysml/SysML-v2-Release-${RELEASE}/install/jupyter
+RUN ./install.sh
 
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
-WORKDIR /workspaces/sysml2-jupyter
-RUN git clone --depth 1 https://github.com/Systems-Modeling/SysML-v2-Release.git
-RUN chmod +x ./SysML-v2-Release/install/jupyter/install.sh
+CMD jupyter lab --allow-root
