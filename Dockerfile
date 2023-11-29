@@ -21,4 +21,7 @@ ENV PATH="/home/root/miniconda3/bin:/home/root/miniconda3/condabin:/usr/local/op
 WORKDIR /home/root/sysml/SysML-v2-Release-${RELEASE}/install/jupyter
 RUN ./install.sh
 
-CMD jupyter lab --allow-root
+RUN mkdir -p /home/root/work
+WORKDIR /home/root/work
+CMD jupyter lab --ip=* --no-browser --allow-root --notebook-dir=/home/root/work
+
