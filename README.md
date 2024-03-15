@@ -20,3 +20,10 @@ this sites may be helpful
 * [How to import all Root CAs from Windows store into WSL automatically? · Issue \#3161 · microsoft/WSL](https://github.com/microsoft/WSL/issues/3161)
 * [sudo update\-ca\-certificates
 ](https://stackoverflow.com/questions/72167566/wsl-docker-curl-60-ssl-certificate-problem-unable-to-get-local-issuer-certi)
+
+
+build memo for me
+1. change `ARG RELEASE=2024-02`
+1. run `docker build -t bleach31/jupyter-sysml2:{RELEASE}`
+1. `docker login -u bleach31`
+1. `docker push bleach31/jupyter-sysml2:{RELEASE}`

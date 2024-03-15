@@ -1,6 +1,6 @@
 FROM openjdk:17-slim
 # SysML v2 Version
-ARG RELEASE=2023-10
+ARG RELEASE=2024-02
 RUN apt-get --quiet --yes update && apt-get install -yqq \
   wget 
 
