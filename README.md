@@ -23,7 +23,7 @@ this sites may be helpful
 
 
 build memo for me
-1. change `ARG RELEASE=2024-02`
-1. run `docker build -t bleach31/jupyter-sysml2:{RELEASE}`
+1. open `Dockerfile`, change `ARG RELEASE=2024-02`
+1. run `docker build -t bleach31/jupyter-sysml2:{RELEASE} .`
 1. `docker login -u bleach31`
 1. `docker push bleach31/jupyter-sysml2:{RELEASE}`
